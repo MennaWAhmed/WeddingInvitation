@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#142850">
+    <meta name="description" content="دعوة زفاف أحمد ومنة">
+    <title>دعوة زفاف | أحمد ومنة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa&family=El+Messiri:wght@400&family=Sofia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js?v=wedding-1830-20261023" defer></script>
+  </head>
+  <body>
+    <audio id="bgMusic" src="wedding-song.mp3" preload="auto" loop></audio>
+    <main>
+      <section class="screen cover-screen" id="cover-screen" aria-label="غلاف الدعوة">
+        <div class="ambient-flower ambient-flower-one" aria-hidden="true">✿</div>
+        <div class="ambient-flower ambient-flower-two" aria-hidden="true">✻</div>
+        <div class="ambient-flower ambient-flower-three" aria-hidden="true">✿</div>
+        <div class="ambient-flower ambient-flower-four" aria-hidden="true">✻</div>
+        <div class="ambient-flower ambient-flower-five" aria-hidden="true">✿</div>
+        <div class="ambient-flower ambient-flower-six" aria-hidden="true">✻</div>
+
+        <div class="opening-card">
+          <img class="card-flower card-flower-top" src="flower-background.webp" alt="" aria-hidden="true">
+          <img class="card-flower card-flower-bottom" src="flower-background.webp" alt="" aria-hidden="true">
+          <div class="heart-seal" aria-hidden="true">♥</div>
+          <div class="cover-names-wrap">
+            <h1 class="cover-name">
+              <span class="cover-name-line">أحمد</span>
+              <span class="cover-name-amp">&amp;</span>
+              <span class="cover-name-line">منة</span>
+            </h1>
+            <div class="name-divider" aria-hidden="true"><span></span>❦<span></span></div>
+            <p class="cover-date">12 نوفمبر 2026</p>
+            <p class="cover-subtitle">باسم خالق الحب نبدأ</p>
+            <button class="open-button" id="openBtn" type="button">فتح</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="screen invitation hidden" id="main-invite">
+        <header class="invite-hero">
+          <div class="hero-wash" aria-hidden="true"></div>
+          <div class="hero-content">
+            <img class="hero-divider" src="goldenline2-decoration.webp" alt="" aria-hidden="true">
+            <p class="hero-title">حفل زفافنا</p>
+            <div class="hero-photo-stage">
+              <img class="hero-bouquet hero-bouquet-left" src="flower2-decoration.webp" alt="" aria-hidden="true">
+              <img class="hero-bouquet hero-bouquet-right" src="flower5-decoration.webp" alt="" aria-hidden="true">
+              <label class="single-photo-picker" for="heroPhotoInput">
+                <img class="photo-preview" id="heroPhotoPreview" src="bride.jpeg" alt="صورة العروسين">
+                <span class="photo-placeholder" id="photoPlaceholder" hidden>
+                  <span class="photo-placeholder-icon" aria-hidden="true">＋</span>
+                  <span>اضغط لاختيار صورة واحدة</span>
+                </span>
+                <input class="photo-file-input" id="heroPhotoInput" type="file" accept="image/*" aria-describedby="photoUploadStatus">
+              </label>
+              <img class="hero-envelope" src="envelope-cover.webp" alt="" aria-hidden="true">
+            </div>
+            <p class="photo-upload-status" id="photoUploadStatus" aria-live="polite">صورة العروسين ظاهرة، اضغط عليها لتغييرها</p>
+            <h1 class="couple-names">أحمد <span>&amp;</span> منة</h1>
+          </div>
+        </header>
+
+        <section class="invitation-section wedding-details" id="sec-date">
+          <img class="details-bouquet details-bouquet-right" src="flower5-decoration.webp" alt="" aria-hidden="true">
+          <img class="details-bouquet details-bouquet-left" src="flower2-decoration.webp" alt="" aria-hidden="true">
+          <div class="details-panel">
+            <h2 class="details-title">معلومات الحفل</h2>
+            <p class="details-welcome">بكل سعادة ندعوكم<br>لمشاركتنا فرحتنا في هذا اليوم</p>
+            <div class="details-couple">
+              <p>أحمد</p>
+              <span aria-hidden="true">&amp;</span>
+              <p>منة</p>
+            </div>
+            <div class="event-schedule">
+              <article class="event-item">
+                <h3>حفل الزفاف</h3>
+                <p class="event-venue">قاعة الصفا، مسجد المشير طنطاوي، التجمع الخامس</p>
+                <div class="event-time"><span>الخميس</span><span>6:30 PM</span></div>
+                <div class="event-date"><span>نوفمبر<br>2026</span><strong>12</strong></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="invitation-section reception-section" id="sec-reception">
+          <img class="reception-flower reception-flower-left" src="flower3-decoration.webp" alt="" aria-hidden="true">
+          <img class="reception-flower reception-flower-right" src="flower5-decoration.webp" alt="" aria-hidden="true">
+          <div class="reception-panel">
+            <h2 class="reception-title">معلومات الاستقبال</h2>
+            <h3 class="reception-subtitle">سيقام الاستقبال في:</h3>
+            <div class="reception-date">
+              <span>الخميس</span>
+              <span>6:30 PM</span>
+              <span>نوفمبر<br>2026</span>
+              <strong>12</strong>
+            </div>
+            <div class="reception-countdown">
+              <h3>العد التنازلي</h3>
+              <p id="receptionCountdown" aria-live="off">جارٍ حساب الوقت المتبقي</p>
+            </div>
+            <div class="calendar-card">
+              <h3 class="calendar-title">نوفمبر 2026</h3>
+              <div class="calendar-weekdays" aria-hidden="true">
+                <span>س</span><span>ح</span><span>إ</span><span>ث</span><span>أ</span><span>خ</span><span>ج</span>
+              </div>
+              <div class="calendar-days" id="receptionCalendar" aria-label="تقويم نوفمبر 2026"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="invitation-section location-dress-section" id="sec-location">
+          <div class="location-dress-content">
+            <div class="venue-block">
+              <h2 class="location-dress-title">مكان الاستقبال</h2>
+              <p class="venue-name">قاعة الصفا، مسجد المشير طنطاوي، التجمع الخامس</p>
+              <iframe
+                class="venue-map"
+                title="خريطة موقع قاعة الصفا"
+                src="https://www.google.com/maps?q=298M%20X86%20Safa%20Hall%20Mosque%2C%20Field%20Marshal%20Tantawi%2C%20El-Moshir%20Tantawy%20Axis%2C%20Nasr%20City%2C%20Cairo&output=embed"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen>
+              </iframe>
+              <a class="directions-link" href="https://maps.app.goo.gl/LNRGiCYFBCa9Wsu48?g_st=iw" target="_blank" rel="noreferrer">
+                الاتجاهات <span aria-hidden="true">➤</span>
+              </a>
+            </div>
+            <div class="dress-code-block">
+              <h2 class="location-dress-title" lang="en" dir="ltr">Dress Code</h2>
+              <div class="dress-colors" role="list" aria-label="ألوان ملابس الحفل">
+                <span class="dress-color dress-color-sage" role="listitem" aria-label="#CFDEBF"></span>
+                <span class="dress-color dress-color-pink" role="listitem" aria-label="#F9CFD0"></span>
+                <span class="dress-color dress-color-yellow" role="listitem" aria-label="#FDEDA2"></span>
+                <span class="dress-color dress-color-lavender" role="listitem" aria-label="#DBCEE8"></span>
+                <span class="dress-color dress-color-blue" role="listitem" aria-label="#BDE0F6"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="invitation-section wishes-section" id="sec-wishes">
+          <div class="wishes-card">
+            <h2 class="wishes-title">سجل التهاني</h2>
+            <div class="wishes-layout">
+              <form class="wish-form" id="wishForm">
+                <label class="visually-hidden" for="wish-name">اسمك</label>
+                <input id="wish-name" name="name" type="text" maxlength="60" placeholder="أدخل اسمك*" required>
+                <label class="visually-hidden" for="wish-msg">اكتب تهنئتك</label>
+                <textarea id="wish-msg" name="message" rows="3" maxlength="400" placeholder="اكتب تهنئتك*" required></textarea>
+                <div class="wish-actions">
+                  <button class="wish-submit" type="submit">إرسال التهنئة</button>
+                  <button class="wish-inspire" id="wishInspire" type="button" aria-label="اقتراح تهنئة" title="اقتراح تهنئة">🪄</button>
+                </div>
+              </form>
+              <div class="wishes-board" aria-live="polite">
+                <p id="noWishesMsg">كونوا أول من يترك تهنئة جميلة</p>
+                <div id="wishesList"></div>
+              </div>
+            </div>
+          </div>
+          <img class="wishes-flower" src="flower3-decoration.webp" alt="" aria-hidden="true">
+        </section>
+
+        <footer class="invite-footer footer-inner">
+          <img class="footer-flower" src="flower5-decoration.webp" alt="" aria-hidden="true">
+          <span class="ornament" aria-hidden="true">✦　❦　✦</span>
+          <p class="footer-names">أحمد &amp; منة</p>
+          <small>بحضوركم تكتمل فرحتنا</small>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

@@ -56,37 +56,11 @@ const LEGACY_SAMPLE_WISHES = new Set([
 /* =========================================================
    1b. SINGLE HERO PHOTO PICKER
    ========================================================= */
-(function initHeroPhoto() {
-  const input = document.getElementById('heroPhotoInput');
-  const preview = document.getElementById('heroPhotoPreview');
-  const placeholder = document.getElementById('photoPlaceholder');
-  const status = document.getElementById('photoUploadStatus');
-  if (!input || !preview || !placeholder || !status) return;
 
-  let previewUrl = '';
-
-  input.addEventListener('change', () => {
-    const [file] = input.files || [];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      input.value = '';
-      status.textContent = 'الرجاء اختيار ملف صورة صالح.';
-      return;
-    }
-
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    previewUrl = URL.createObjectURL(file);
-    preview.src = previewUrl;
-    preview.hidden = false;
-    placeholder.hidden = true;
-    status.textContent = `تم اختيار الصورة: ${file.name}`;
-  });
-})();
 
 /* ── Wedding photo gallery ── */
+/* ── Wedding photo gallery ── */
 (function initGallery() {
-  const input = document.getElementById('galleryPhotoInput');
   const cards = {
     left: document.querySelector('.gallery-card-left'),
     center: document.querySelector('.gallery-card-center'),
@@ -94,33 +68,35 @@ const LEGACY_SAMPLE_WISHES = new Set([
   };
   const dots = document.getElementById('galleryDots');
   const hint = document.getElementById('galleryHint');
-  if (!input || !cards.left || !cards.center || !cards.right || !dots || !hint) return;
+  if (!cards.left || !cards.center || !cards.right || !dots || !hint) return;
 
-  let photos = [];
+  // Put your own image paths here (relative to index.html)
+  const photos = [
+    'images/photo1.jpg',
+    'images/photo2.jpg',
+    'images/photo3.jpg',
+    'images/photo4.jpg',
+    'images/photo5.jpg',
+  ];
+
   let activeIndex = 0;
-  let objectUrls = [];
-  const emptySlides = 7;
   let transitionTimer = 0;
   let isPaused = false;
 
   function render() {
-    const count = photos.length || emptySlides;
+    const count = photos.length;
     const offsets = { left: -1, center: 0, right: 1 };
 
     Object.keys(offsets).forEach(position => {
       const card = document.querySelector(`.gallery-card-${position}`);
       const photoIndex = (activeIndex + offsets[position] + count) % count;
       card.replaceChildren();
-      card.setAttribute('aria-label', photos.length
-        ? `عرض الصورة ${photoIndex + 1}`
-        : 'اختيار صور الزفاف');
+      card.setAttribute('aria-label', `عرض الصورة ${photoIndex + 1}`);
 
-      if (photos.length) {
-        const image = document.createElement('img');
-        image.src = photos[photoIndex];
-        image.alt = `صورة زفاف ${photoIndex + 1}`;
-        card.append(image);
-      }
+      const image = document.createElement('img');
+      image.src = photos[photoIndex];
+      image.alt = `صورة زفاف ${photoIndex + 1}`;
+      card.append(image);
     });
 
     dots.replaceChildren();
@@ -137,9 +113,7 @@ const LEGACY_SAMPLE_WISHES = new Set([
       dots.append(dot);
     }
 
-    hint.textContent = photos.length
-      ? `الصورة ${activeIndex + 1} من ${photos.length}`
-      : 'اختاروا صوركم لعرضها هنا';
+    hint.textContent = `الصورة ${activeIndex + 1} من ${count}`;
   }
 
   function moveGallery(direction) {
@@ -170,10 +144,6 @@ const LEGACY_SAMPLE_WISHES = new Set([
 
   Object.values(cards).forEach(card => {
     card.addEventListener('click', () => {
-      if (!photos.length) {
-        input.click();
-        return;
-      }
       moveGallery(card.classList.contains('gallery-card-left') ? -1 : 1);
     });
   });
@@ -189,22 +159,6 @@ const LEGACY_SAMPLE_WISHES = new Set([
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!isPaused && !document.hidden && !reducedMotion) moveGallery(1);
   }, 3200);
-
-  input.addEventListener('change', () => {
-    const files = Array.from(input.files || []);
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
-    if (!imageFiles.length) {
-      hint.textContent = 'الرجاء اختيار ملفات صور صالحة.';
-      input.value = '';
-      return;
-    }
-
-    objectUrls.forEach(url => URL.revokeObjectURL(url));
-    objectUrls = imageFiles.map(file => URL.createObjectURL(file));
-    photos = objectUrls.slice();
-    activeIndex = 0;
-    render();
-  });
 
   render();
 })();

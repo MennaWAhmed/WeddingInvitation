@@ -255,21 +255,37 @@ function initScrollReveal() {
    4. WISHES FORM
    ========================================================= */
 function initWishes() {
+  const SUPABASE_URL = 'https://vfycasjwudqofiqmdemh.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeWNhc2p3dWRxb2ZpcW1kZW1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MDkzNDQsImV4cCI6MjEwODM4NTM0NH0.CNaZoxHgJbfoQr1bFEJCX9lYXOT6WFHatn2zlvn1VJ0';
+  const API = `${SUPABASE_URL}/rest/v1/wishes`;
+  const HEADERS = { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' };
+
   const form   = document.getElementById('wishForm');
   const list   = document.getElementById('wishesList');
   const noMsg  = document.getElementById('noWishesMsg');
   const inspireBtn = document.getElementById('wishInspire');
   const messageInput = document.getElementById('wish-msg');
+  const submitBtn = form ? form.querySelector('.wish-submit') : null;
   if (!form || !list) return;
 
-  // Load from storage + defaults
-  const stored = JSON.parse(localStorage.getItem('wedding_wishes') || '[]')
-    .filter(wish => !LEGACY_SAMPLE_WISHES.has(JSON.stringify({ name: wish.name, msg: wish.msg })));
-  localStorage.setItem('wedding_wishes', JSON.stringify(stored));
-  const all    = [...DEFAULT_WISHES, ...stored];
-
-  if (all.length > 0 && noMsg) noMsg.style.display = 'none';
-  all.forEach((w, i) => renderWish(w.name, w.msg, i * 100, false, w.date));
+  // Load wishes from the database, then the default ones
+  async function loadWishes() {
+    let online = [];
+    try {
+      const res = await fetch(`${API}?select=name,msg,created_at&order=created_at.desc&limit=300`, { headers: HEADERS });
+      if (res.ok) online = await res.json();
+    } catch (err) {
+      console.error('Could not load wishes:', err);
+    }
+    const all = [
+  ...online.map(w => ({ name: w.name, msg: w.msg, date: w.created_at })),
+  ...DEFAULT_WISHES,
+  ...LEGACY_WISHES,
+];
+    if (all.length > 0 && noMsg) noMsg.style.display = 'none';
+    all.forEach((w, i) => renderWish(w.name, w.msg, Math.min(i, 10) * 80, false, w.date));
+  }
+  loadWishes();
 
   if (inspireBtn && messageInput) {
     const greetings = [
@@ -283,6 +299,62 @@ function initWishes() {
       messageInput.focus();
     });
   }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = document.getElementById('wish-name').value.trim();
+    const msg  = document.getElementById('wish-msg').value.trim();
+
+    if (!name) { shake('wish-name'); return; }
+    if (!msg)  { shake('wish-msg');  return; }
+
+    if (submitBtn) submitBtn.disabled = true;
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { ...HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify({ name, msg }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      if (noMsg) noMsg.style.display = 'none';
+      renderWish(name, msg, 0, true, new Date().toISOString());
+      form.reset();
+    } catch (err) {
+      console.error('Could not save wish:', err);
+      alert('حدث خطأ أثناء إرسال التهنئة، حاول مرة أخرى.');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+
+  function renderWish(name, msg, delay = 0, prepend = false, date = new Date().toISOString()) {
+    const el = document.createElement('div');
+    el.className = 'wish-item';
+    el.style.animationDelay = delay + 'ms';
+    const dateText = new Intl.DateTimeFormat('en-CA', {
+      year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true,
+    }).format(new Date(date));
+    el.innerHTML = `
+      <div class="wish-item-header">
+        <div class="wish-item-name">${esc(name)}</div>
+        <time class="wish-item-date" datetime="${esc(date)}">${esc(dateText)}</time>
+      </div>
+      <div class="wish-item-msg">${esc(msg)}</div>
+    `;
+    if (prepend) list.insertBefore(el, list.firstChild);
+    else         list.appendChild(el);
+  }
+
+  function shake(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.animation = 'none';
+    requestAnimationFrame(() => { el.style.animation = 'shakeEl .4s ease'; });
+    el.focus();
+  }
+}
 
   form.addEventListener('submit', e => {
     e.preventDefault();

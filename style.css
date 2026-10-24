@@ -1208,6 +1208,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .reception-flower-right {
+  width: clamp(70px, 20vw, 100px);   /* smaller than the left one */
   right: 0;
   bottom: 1%;
   transform: scaleX(-1);

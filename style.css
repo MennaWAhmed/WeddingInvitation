@@ -1208,9 +1208,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .reception-flower-right {
-  width: clamp(70px, 20vw, 100px);   /* smaller than the left one */
-  right: 0;
-  bottom: 1%;
+  width: clamp(65px, 18vw, 85px);
+  right: -20px;
+  bottom: -3%;
+  z-index: 10;
   transform: scaleX(-1);
 }
 

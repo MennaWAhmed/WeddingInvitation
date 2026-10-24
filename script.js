@@ -49,6 +49,7 @@ const LEGACY_WISHES = [
       mainInvite.classList.remove('hidden');
       initScrollReveal();
       initWishes();
+      initAutoScroll(); 
     }, 750);
   }
 })();
@@ -169,7 +170,7 @@ const LEGACY_WISHES = [
   const countdown = document.getElementById('receptionCountdown');
   if (!calendar || !countdown) return;
 
-  const targetDate = new Date(2026, 10, 12, 18, 30, 0);
+  const targetDate = new Date('2026-11-12T18:30:00+02:00');
   const firstDayOfMonth = new Date(2026, 10, 1);
   const dayOffset = (firstDayOfMonth.getDay() + 1) % 7;
   const daysInMonth = new Date(2026, 11, 0).getDate();
@@ -229,7 +230,58 @@ const LEGACY_WISHES = [
     });
   }
 })();
+/* =========================================================
+   AUTO SCROLL AFTER OPENING
+   ========================================================= */
+function initAutoScroll() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  const SPEED = 45;          // pixels per second (higher = faster)
+  const START_DELAY = 2500;  // wait before starting, in ms
+  const root = document.documentElement;
+  const stopEvents = ['wheel', 'touchstart', 'pointerdown', 'keydown', 'focusin'];
+
+  let running = false;
+  let rafId = 0;
+  let startTimer = 0;
+  let lastTime = 0;
+  let pos = 0;
+
+  function step(time) {
+    if (!running) return;
+    if (!lastTime) lastTime = time;
+    const delta = Math.min(time - lastTime, 100);
+    lastTime = time;
+
+    const maxScroll = root.scrollHeight - window.innerHeight;
+    pos += (SPEED * delta) / 1000;
+
+    if (pos >= maxScroll) {
+      window.scrollTo(0, maxScroll);
+      stop();
+      return;
+    }
+    window.scrollTo(0, pos);
+    rafId = requestAnimationFrame(step);
+  }
+
+  function stop() {
+    running = false;
+    cancelAnimationFrame(rafId);
+    clearTimeout(startTimer);
+    root.style.scrollBehavior = '';
+    stopEvents.forEach(evt => window.removeEventListener(evt, stop));
+  }
+
+  stopEvents.forEach(evt => window.addEventListener(evt, stop, { passive: true }));
+
+  startTimer = window.setTimeout(() => {
+    running = true;
+    pos = window.scrollY;
+    root.style.scrollBehavior = 'auto'; // your CSS has smooth scrolling, which would make this jerky
+    rafId = requestAnimationFrame(step);
+  }, START_DELAY);
+}
 /* =========================================================
    3. SCROLL REVEAL
    ========================================================= */
@@ -279,8 +331,7 @@ function initWishes() {
     }
     const all = [
   ...online.map(w => ({ name: w.name, msg: w.msg, date: w.created_at })),
-  ...DEFAULT_WISHES,
-  ...LEGACY_WISHES,
+  ...DEFAULT_WISHES
     ];
     if (all.length > 0 && noMsg) noMsg.style.display = 'none';
     all.forEach((w, i) => renderWish(w.name, w.msg, Math.min(i, 10) * 80, false, w.date));

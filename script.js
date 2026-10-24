@@ -20,11 +20,11 @@ const DEFAULT_WISHES = [
   { name: 'Norhan Mhana', msg: 'الف الف مبروووك ياموووون انت واحمد ربنا يكملهالكم ع خير يارب ويرزقكم الذريه الصالحه يارب هتبقو احلى عريس وعروسه ان شاء الله ربنا يحفظكم يارب بحبكم ❤️❤️❤️❤️' },
 ];
 
-const LEGACY_SAMPLE_WISHES = new Set([
-  JSON.stringify({ name: 'أم العريس', msg: 'بالرفاه والبنين، ويجمعكم الله دائماً على المحبة والسعادة 💙' }),
-  JSON.stringify({ name: 'عائلة الخير', msg: 'ألف مبروك! تبارك الله لكما وبارك عليكما وجمع بينكما في خير.' }),
-  JSON.stringify({ name: 'A', msg: 'Congrats' }),
-]);
+const LEGACY_WISHES = [
+  { name: 'أم العريس', msg: 'بالرفاه والبنين، ويجمعكم الله دائماً على المحبة والسعادة 💙' },
+  { name: 'عائلة الخير', msg: 'ألف مبروك! تبارك الله لكما وبارك عليكما وجمع بينكما في خير.' },
+  { name: 'A', msg: 'Congrats' },
+];
 
 /* =========================================================
    1. COVER SCREEN → OPEN INVITATION
@@ -281,7 +281,7 @@ function initWishes() {
   ...online.map(w => ({ name: w.name, msg: w.msg, date: w.created_at })),
   ...DEFAULT_WISHES,
   ...LEGACY_WISHES,
-];
+    ];
     if (all.length > 0 && noMsg) noMsg.style.display = 'none';
     all.forEach((w, i) => renderWish(w.name, w.msg, Math.min(i, 10) * 80, false, w.date));
   }
@@ -356,62 +356,7 @@ function initWishes() {
   }
 }
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = document.getElementById('wish-name').value.trim();
-    const msg  = document.getElementById('wish-msg').value.trim();
-
-    if (!name) { shake('wish-name'); return; }
-    if (!msg)  { shake('wish-msg');  return; }
-
-    // Save
-    const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-    const date = new Date().toISOString();
-    wishes.push({ name, msg, date });
-    localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
-
-    // Render
-    if (noMsg) noMsg.style.display = 'none';
-    renderWish(name, msg, 0, true, date);
-
-    // Reset
-    form.reset();
-    document.getElementById('sec-wishes').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  function renderWish(name, msg, delay = 0, prepend = false, date = new Date().toISOString()) {
-    const el = document.createElement('div');
-    el.className = 'wish-item';
-    el.style.animationDelay = delay + 'ms';
-    const dateText = new Intl.DateTimeFormat('en-CA', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true,
-    }).format(new Date(date));
-    el.innerHTML = `
-      <div class="wish-item-header">
-        <div class="wish-item-name">${esc(name)}</div>
-        <time class="wish-item-date" datetime="${esc(date)}">${esc(dateText)}</time>
-      </div>
-      <div class="wish-item-msg">${esc(msg)}</div>
-    `;
-    if (prepend) list.insertBefore(el, list.firstChild);
-    else         list.appendChild(el);
-  }
-
-  function shake(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.style.animation = 'none';
-    requestAnimationFrame(() => { el.style.animation = 'shakeEl .4s ease'; });
-    el.focus();
-  }
-}
-
+  
 /* =========================================================
    5. WEDDING MUSIC
    ========================================================= */
